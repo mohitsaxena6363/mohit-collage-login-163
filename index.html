@@ -95,7 +95,6 @@
 
   <!-- 🌟 Welcome Screen -->
   <div id="welcome-screen">
-    <!-- 🏫 University Logo -->
     <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Patliputra_University.svg/1200px-Patliputra_University.svg.png" alt="Patliputra Logo" />
     <h1>🎓 Welcome to Patliputra University</h1>
     <p>Login to access your college dashboard</p>
@@ -104,14 +103,12 @@
 
   <!-- 🔐 Login Box -->
   <div class="login-box" id="login-box">
-    <!-- 🌙 Dark Mode Toggle -->
     <div class="dark-toggle">
       <label class="toggle-label">
         <input type="checkbox" id="darkModeToggle"> 🌙 Dark
       </label>
     </div>
 
-    <!-- 🏫 University Logo Again -->
     <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Patliputra_University.svg/1200px-Patliputra_University.svg.png" alt="Logo" />
     <h2>College Login</h2>
 
@@ -134,6 +131,32 @@
     function showLogin() {
       document.getElementById('welcome-screen').style.display = 'none';
       document.getElementById('login-box').style.display = 'block';
+
+      const message = "Hello Mohit, Welcome to your Patliputra University";
+      const utterance = new SpeechSynthesisUtterance(message);
+      utterance.lang = "en-US";
+      utterance.rate = 0.8;  // आराम से बोले
+      utterance.pitch = 1.1; // soft sound
+
+      function setVoice() {
+        const voices = speechSynthesis.getVoices();
+        const femaleVoice =
+          voices.find(voice => voice.name === "Google US English") ||
+          voices.find(voice => voice.name.toLowerCase().includes("samantha")) ||
+          voices.find(voice => voice.name.toLowerCase().includes("zira")) ||
+          voices[0];
+
+        if (femaleVoice) {
+          utterance.voice = femaleVoice;
+          speechSynthesis.speak(utterance);
+        }
+      }
+
+      if (speechSynthesis.getVoices().length === 0) {
+        speechSynthesis.addEventListener('voiceschanged', setVoice);
+      } else {
+        setVoice();
+      }
     }
 
     const passwordInput = document.getElementById("password");
